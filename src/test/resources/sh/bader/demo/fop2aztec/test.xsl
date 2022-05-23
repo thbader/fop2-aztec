@@ -15,23 +15,23 @@
             <fo:page-sequence master-reference="only">
                 <fo:flow flow-name="xsl-region-body">
                     <fo:block>
-                        <xsl:apply-templates select="data/value"/>
+                        <xsl:call-template name="codes"/>
                     </fo:block>
                 </fo:flow>
             </fo:page-sequence>
         </fo:root>
     </xsl:template>
 
-    <xsl:template name="value">
+    <xsl:template name="codes">
         <fo:block>
-            Value: <xsl:value-of select="."/>
+            Value: <xsl:value-of select="data/value"/>
         </fo:block>
-        <fo:block margin-top="20mm">Datamatrix-Code</fo:block>
+        <fo:block margin-top="20mm" border-top="1px solid black">Datamatrix-Code</fo:block>
         <fo:block>
             <fo:instream-foreign-object >
                 <j4lbarcode xmlns="http://java4less.com/j4lbarcode/fop" mode="inline">
                     <datamatrix>
-                        <code>This is a Datamatrix</code>
+                        <code><xsl:value-of select="data/value"/></code>
                         <moduleSize>2</moduleSize>
                         <processTilde>false</processTilde>
                         <margin>30</margin>
@@ -41,12 +41,12 @@
                 </j4lbarcode>
             </fo:instream-foreign-object>
         </fo:block>
-        <fo:block margin-top="20mm">Aztec</fo:block>
+        <fo:block margin-top="20mm" border-top="1px solid black">Aztec</fo:block>
         <fo:block>
             <fo:instream-foreign-object>
                 <j4lbarcode xmlns="http://java4less.com/j4lbarcode/fop" mode="inline">
                     <aztec>
-                        <CODE>123</CODE>
+                        <CODE><xsl:value-of select="data/value"/></CODE>
                         <TEXTFONT>NULL</TEXTFONT>
                         <BACKCOLOR>#ffffff</BACKCOLOR>
                         <CONFIGURATIONTYPE>0</CONFIGURATIONTYPE>
@@ -59,6 +59,24 @@
                         <ECLEVEL>23</ECLEVEL>
                         <MODULESIZE>2</MODULESIZE>
                     </aztec>
+                </j4lbarcode>
+            </fo:instream-foreign-object>
+        </fo:block>
+        <fo:block margin-top="20mm" border-top="1px solid black">PDF 417</fo:block>
+        <fo:block>
+            <fo:instream-foreign-object >
+                <j4lbarcode xmlns="http://java4less.com/j4lbarcode/fop" mode="inline">
+                    <pdf417>
+                        <code><xsl:value-of select="/data/value"/></code>
+                        <rows>0</rows>
+                        <maxRows>30</maxRows>
+                        <cols>5</cols>
+                        <ecLevel>3</ecLevel>
+                        <compaction>TEXT</compaction>
+                        <X>1</X>
+                        <H>10</H>
+                        <margin>30</margin>
+                    </pdf417>
                 </j4lbarcode>
             </fo:instream-foreign-object>
         </fo:block>
